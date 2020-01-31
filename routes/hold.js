@@ -6,7 +6,7 @@ module.exports = function (app, db) {
 
   app.get('/', (req, res) => {
     console.log('Home Okay');
-    res.sendFile(__dirname, './index.html');
+    res.sendFile(__dirname, "./public/index.html");
   });
 
   //Grabbing recent articles about technology from the NewYorkTimes

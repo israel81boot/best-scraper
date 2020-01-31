@@ -1,7 +1,7 @@
 var express = require("express");
 var app = express();
 var mongoose = require("mongoose");
-var  PORT = process.env.PORT || 4000;
+var  PORT = process.env.PORT || 3000;
 
 var logger = require("morgan");
 var port = express ();
@@ -19,7 +19,7 @@ app.use(express.static(__dirname = "./public"));
 
 
 
-var PORT = 4000; 
+var PORT = 3000; 
 
 var app = express(); 
 
@@ -30,6 +30,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 // Make public a static folder
 app.use(express.static("public"));
+
+require("./routes/hold.js")(app, db);
 
 
 app.listen(PORT, function(){
