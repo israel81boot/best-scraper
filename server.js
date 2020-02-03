@@ -50,7 +50,7 @@ mongoose.connect(MONGODB_URI, function(err) {
   console.log("Connected successfully to server");
 }, { useNewUrlParser: true });
 
-require("./routes/hold.js")(app, db);
+require("./routes/hold")(app, db);
 // Start the server
 app.listen(PORT, function() {
     console.log("App running on port " + PORT + "!");
