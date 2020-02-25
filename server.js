@@ -6,6 +6,7 @@ var mongoose = require("mongoose");
 // It works on the client and on the server
 var axios = require("axios");
 var cheerio = require("cheerio");
+var db = require("./models");
  
 
 // Require all models
@@ -38,19 +39,18 @@ app.use(express.static("public"));
 
 var assert = require('assert');
 // Connection URL
-var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/best-scraper";
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/scraper"; 
 
 // Create a new MongoClient
 
 
 // Use connect method to connect to the Server 
-var db = mongoose.connection;
 mongoose.connect(MONGODB_URI, function(err) {
   assert.equal(null, err);
   console.log("Connected successfully to server");
 }, { useNewUrlParser: true });
 
-require("./routes/hold")(app, db);
+ require("./routes/hold")(app, db);
 // Start the server
 app.listen(PORT, function() {
     console.log("App running on port " + PORT + "!");
