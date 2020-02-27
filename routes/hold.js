@@ -12,14 +12,14 @@ module.exports = function (app, db) {
   //Grabbing recent articles about technology from the NewYorkTimes
   app.get("/api/scrape", function (req, res) {
 
-    axios.get("https://www.nytimes.com/section/technology#stream-panel").then(function (response) {
+    axios.get("https://www.nytimes.com").then(function (response) {
 
       var $ = cheerio.load(response.data);
       // var test = $(".css-4jyr1y a").children();
       // console.log(test);
       var result = {};
       var length = 0;
-      $(".css-4jyr1y").each(function (i, element) {
+      $(".assetWrapper").each(function (i, element) {
         length++;
         // console.log(this.text());
         result.link = "https://www.nytimes.com"+$(this)
