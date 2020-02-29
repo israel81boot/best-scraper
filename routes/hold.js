@@ -12,43 +12,61 @@ module.exports = function (app, db) {
   //Grabbing recent articles about technology from the NewYorkTimes
   app.get("/api/scrape", function (req, res) {
 
-    axios.get("https://www.nytimes.com").then(function (response) {
-
-      var $ = cheerio.load(response.data);
-      // var test = $(".css-4jyr1y a").children();
-      // console.log(test);
-      var result = {};
-      var length = 0;
-      $(".assetWrapper").each(function (i, element) {
-        length++;
-        // console.log(this.text());
-        result.link = "https://www.nytimes.com"+$(this)
-          .children("a")
+    return axios.get("http://www.nytimes.com").then(function(res) {
+      var $ = cheerio.load(res.data);
+      console.log("scraping");
+      // Make an empty array to save our article info
+      var articles = [];
+  
+      // Now, find and loop through each element that has the ".assetWrapper" class
+      // (i.e, the section holding the articles)
+      $(".assetWrapper").each(function(i, element) {
+        // In each article section, we grab the headline, URL, and summary
+  
+        // Grab the headline of the article
+        var head = $(this)
+          .find("h2")
+          .text()
+          .trim();
+  
+        // Grab the URL of the article
+        var url = $(this)
+          .find("a")
           .attr("href");
+  
+        // Grab the summary of the article
+        var sum = $(this)
+          .find("p")
+          .text()
+          .trim();
+  
+        // So long as our headline and sum and url aren't empty or undefined, do the following
+        if (head && sum && url) {
+          // This section uses regular expressions and the trim function to tidy our headlines and summaries
+          // We're removing extra lines, extra spacing, extra tabs, etc.. to increase to typographical cleanliness.
+          var headNeat = head.replace(/(\r\n|\n|\r|\t|\s+)/gm, " ").trim();
+          var sumNeat = sum.replace(/(\r\n|\n|\r|\t|\s+)/gm, " ").trim();
+  
+          // Initialize an object we will push to the articles array
+          var dataToAdd = {
+            title: headNeat,
+            summary: sumNeat,
+            link: "https://www.nytimes.com" + url
+          };
 
-        var articles_link = $(this).children("a");
-
-        result.title = $(articles_link)
-          .children("h2")
-          .text();
-        result.summary = $(articles_link)
-          .children("p")
-          .text();
-
-        db.Articles.create(result)
+          db.Articles.create(dataToAdd)
           .then(function (dbArticle) {
-            console.log(dbArticle);
+            // console.log(dbArticle);
           })
           .catch(function (err) {
             console.log(err);
           });
-
-          // res.send(result);
-
+  
+          // Push new article into articles array
+          articles.push(dataToAdd);
+        }
       });
-
-      res.send(length+" New articles added!!!");
-      console.log("we got here!");
+      return articles;
     });
   });
 
@@ -130,4 +148,23 @@ module.exports = function (app, db) {
   });
 
 
-}
+    // Saving/updating an Article's associated Note
+    app.post("/articles/delete/:id", function (req, res) {
+
+      db.SavedArticle.remove({ _id: req.params.id }).then(function(dbHeadline) {
+        res.json(dbHeadline);
+      })
+        .then(function (dbArticle) {
+          res.json(dbArticle);
+        })
+        .catch(function (err) {
+          res.json(err);
+        });
+    });
+
+    // Delete the specified headline
+
+
+
+} 
+

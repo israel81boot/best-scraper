@@ -25,7 +25,7 @@ var SavedArticlesSchema = new Schema({
 });
 
 // This creates our model from the above schema, using mongoose's model method
-var SavedArticles = mongoose.model("SavedArticle", SavedArticlesSchema);
+var SavedArticles = mongoose.model("SaveArticles", SavedArticlesSchema);
 
 // Export the Article model
 module.exports = SavedArticles;
