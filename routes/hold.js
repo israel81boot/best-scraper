@@ -154,7 +154,8 @@ module.exports = function (app, db) {
       db.SavedArticle.remove({ _id: req.params.id }).then(function(dbHeadline) {
         res.json(dbHeadline);
       })
-        .then(function (dbArticle) {
+        .then(function (dbArticle)
+         {
           res.json(dbArticle);
         })
         .catch(function (err) {

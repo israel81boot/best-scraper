@@ -1,3 +1,4 @@
+
 $(document).ready(function () {
     var scrape = $("#scrape");
     var articles_view = $("#articles-view");
@@ -6,7 +7,7 @@ $(document).ready(function () {
     var saved = $("#saved");
 
     $.getJSON("/articles", function (data) {
-        console.log(data);
+        // console.log(data);
         // console.log(data.length);
         articles_view.empty();
         var head = "<span><h3>Recent Articles</h3></span>";
@@ -37,7 +38,7 @@ $(document).ready(function () {
                 var row = $("<div  class='row articles'>")
                 var div = $("<div class='col-10'>");
                 var button1 =$('<button type="button" data-id='+data[i]._id+' class="note-btn col-2 btn btn-info">note</button>');
-                var button2 =$('<button type="button" data-id='+data[i]._id+' class="delete-btn col-2 btn btn-danger delete-btn">Delete</button>');
+                var button2 =$('<button type="button" data-id='+data[i]._id+' class="delete-btn col-2 btn btn-danger">Delete</button>');
                 div.append(tittle, overview, link);
                 row.append(div);
                 row.append(button1, button2);
@@ -54,10 +55,9 @@ $(document).ready(function () {
             url: '/api/scrape'
         }).then(function (data, status) {
             console.log("Data: " + data + " Status: " + status);
-            // alert(data);
+            alert(data);
             // articles_view.append(data);
             location.reload();
-            // console.log(data);
 
         });
     });
@@ -70,20 +70,6 @@ $(document).ready(function () {
             console.log("Data: " + data + " Status: " + status);
             alert(data);
             location.reload();
-        });
-    });
-
-    
-    $(document).on('click', '.delete-btn', function(){
-        var id = $(this).attr('data-id');
-        // console.log(Object.keys(id));
-        console.log('id: '+id);
-        $.ajax({
-            method: "GET",
-            url: "/articles/delete/"+id+""
-        }).then((res, status)=>{
-            console.log(Object.keys(res));
-            windows.location.reload();
         });
     });
 
