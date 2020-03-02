@@ -4,7 +4,8 @@ $(document).ready(function () {
     var articles_view = $("#articles-view");
     var clear = $("#clear");
     // var save_btn = $('.save-btn');
-    var saved = $("#saved");
+    var saved = $("#saved"); 
+    var Delete = $("#Delete");
 
     $.getJSON("/articles", function (data) {
         // console.log(data);
@@ -98,16 +99,16 @@ $(document).ready(function () {
 
 
     
-  function handleArticleDelete() {
+  function Delete() {
     // This function handles deleting articles/headlines
     // We grab the id of the article to delete from the card element the delete button sits inside
-    var articleToDelete = $(this)
-      .parents(".card")
+    var Delete = $(this)
+      .parents("+data[i]._id+")
       .data();
 
     // Remove card from page
     $(this)
-      .parents(".card")
+      .parents("+data[i]._id+")
       .remove();
     // Using a delete method here just to be semantic since we are deleting an article/headline
     $.ajax({
@@ -120,4 +121,7 @@ $(document).ready(function () {
       }
     });
   }
-});
+}); 
+
+
+
