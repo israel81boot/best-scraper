@@ -91,8 +91,33 @@ $(document).ready(function () {
             }).then((res, status)=>{
                 console.log("db response: " + res + " Status: " + status);
             });
-        });
+        }); 
+        
+
     });
 
 
+    
+  function handleArticleDelete() {
+    // This function handles deleting articles/headlines
+    // We grab the id of the article to delete from the card element the delete button sits inside
+    var articleToDelete = $(this)
+      .parents(".card")
+      .data();
+
+    // Remove card from page
+    $(this)
+      .parents(".card")
+      .remove();
+    // Using a delete method here just to be semantic since we are deleting an article/headline
+    $.ajax({
+      method: "DELETE",
+      url: "/api/articles/" + articleToDelete._id
+    }).then(function(data) {
+      // If this works out, run getUnsavedArticles again which will re-render our list of saved articles
+      if (data.ok) {
+        getArticles(true);
+      }
+    });
+  }
 });

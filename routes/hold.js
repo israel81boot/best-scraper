@@ -148,22 +148,7 @@ module.exports = function (app, db) {
   });
 
 
-    // Saving/updating an Article's associated Note
-    app.post("/articles/delete/:id", function (req, res) {
-
-      db.SavedArticle.remove({ _id: req.params.id }).then(function(dbHeadline) {
-        res.json(dbHeadline);
-      })
-        .then(function (dbArticle)
-         {
-          res.json(dbArticle);
-        })
-        .catch(function (err) {
-          res.json(err);
-        });
-    });
-
-    // Delete the specified headline
+    
 
 
 
